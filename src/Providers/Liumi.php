@@ -4,12 +4,12 @@ namespace Hardywen\Flow\Providers;
 
 
 use Hardywen\Flow\FlowInterface;
-use Hardywen\Flow\RequestHelper;
+use Hardywen\Flow\Helper;
 use Illuminate\Support\Facades\Cache;
 
 class Liumi implements FlowInterface
 {
-    use RequestHelper;
+    use Helper;
 
     const URL = 'http://yfbapi.liumi.com';
 
@@ -95,6 +95,11 @@ class Liumi implements FlowInterface
         }
         if (!$this->mobile) {
             throw new \Exception('手机号不能为空', 500);
+        } else {
+            //验证手机号段与服务商是否一致
+            if ($this->mobileValidate($this->mobile) != $this->carrier) {
+                throw new \Exception('需要充值的流量与手机号服务商不一致', 500);
+            }
         }
         $params = [
             'appkey'      => $this->appKey,
