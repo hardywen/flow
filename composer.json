@@ -1,0 +1,20 @@
+{
+    "name": "hardywen/flow",
+    "description": "Laravel 手机流量充值,流米",
+    "keywords": ["Laravel5","流米","手机流量"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "hardywen",
+            "email": "375480616@qq.com"
+        }
+    ],
+    "require": {
+        "laravel/framework": "5.2.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Hardywen\\Flow\\": "src"
+        }
+    }
+}
