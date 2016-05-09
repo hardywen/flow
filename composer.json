@@ -16,5 +16,6 @@
         "psr-4": {
             "Hardywen\\Flow\\": "src"
         }
-    }
+    },
+    "minimum-stability": "dev"
 }
