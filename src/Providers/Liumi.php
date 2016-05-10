@@ -88,17 +88,17 @@ class Liumi implements FlowInterface
     public function recharge()
     {
         if (!in_array($this->carrier, ['YD', 'LT', 'DX'])) {
-            throw new \Exception('服务商carrier只能是 YD,LT,DX 这三个', 500);
+            throw new \Exception('服务商carrier只能是 YD,LT,DX 这三个', 422);
         }
         if (!$this->package) {
-            throw new \Exception('package 不能为空', 500);
+            throw new \Exception('package 不能为空', 422);
         }
         if (!$this->mobile) {
-            throw new \Exception('手机号不能为空', 500);
+            throw new \Exception('手机号不能为空', 422);
         } else {
             //验证手机号段与服务商是否一致
             if ($this->mobileValidate($this->mobile) != $this->carrier) {
-                throw new \Exception('需要充值的流量与手机号服务商不一致', 500);
+                throw new \Exception('需要充值的流量与手机号服务商不一致', 422);
             }
         }
         $params = [
@@ -207,7 +207,7 @@ class Liumi implements FlowInterface
             Cache::put('hardywen.flow.token', $this->token, 20);
 
         } else {
-            throw new \Exception("获取token出错:[{$result->code}]", 500);
+            throw new \Exception("获取token出错:[{$result->code}]", 422);
         }
 
     }

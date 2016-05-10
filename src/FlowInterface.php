@@ -28,7 +28,7 @@ interface FlowInterface
 
     /**
      * 充值,应该返回标准格式
-     * @return array ['success'=>boolean,'provider'=>string,'code'=>int, 'msg'=>string]
+     * @return array ['success'=>boolean,'order_sn'=>string,'provider'=>string,'code'=>int, 'msg'=>string]
      */
     public function recharge();
 
