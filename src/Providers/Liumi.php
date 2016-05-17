@@ -12,7 +12,7 @@ class Liumi implements FlowInterface
 {
     use Helper;
 
-    const URL = 'http://yfbapi.liumi.com';
+    protected $domain;
 
     protected $appKey;
 
@@ -29,7 +29,11 @@ class Liumi implements FlowInterface
     function __construct($config)
     {
         if (!is_array($config)) {
-            throw new \Exception('配置参数必须是数组', 500);
+            throw new \Exception('请设置好参数并且配置参数必须是数组', 500);
+        }
+
+        if (!$config['domain']) {
+            throw new \Exception('缺少domain参数', 500);
         }
 
         if (!$config['appKey']) {
@@ -128,7 +132,7 @@ class Liumi implements FlowInterface
 
         $params['sign'] = $this->generateSign($params);
 
-        $result = $this->request(self::URL . '/server/placeOrder', $params, 'POST');
+        $result = $this->request($this->domain . '/server/placeOrder', $params, 'POST');
 
         $result = $this->transform($result);
 
@@ -210,7 +214,7 @@ class Liumi implements FlowInterface
 
         $params['sign'] = $sign;
 
-        $result = $this->request(self::URL . '/server/getToken', $params, 'POST');
+        $result = $this->request($this->domain . '/server/getToken', $params, 'POST');
         $result = json_decode($result);
 
         if (isset($result->data->token)) {

@@ -54,6 +54,7 @@ return [
 
     //流米
     'liumi' => [
+        'domain'    => '',
         'appKey'    => '',
         'appSecret' => ''
     ]
