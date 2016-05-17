@@ -99,6 +99,8 @@ trait Helper
         if ($DX) {
             return 'DX';
         }
+
+        return null;
     }
 
 }

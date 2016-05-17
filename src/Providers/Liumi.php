@@ -3,6 +3,7 @@
 namespace Hardywen\Flow\Providers;
 
 
+use Hardywen\Flow\carrier;
 use Hardywen\Flow\FlowInterface;
 use Hardywen\Flow\Helper;
 use Illuminate\Support\Facades\Cache;
@@ -56,6 +57,17 @@ class Liumi implements FlowInterface
     {
         $this->carrier = $carrier;
         return $this;
+    }
+
+
+    /**
+     * 判断手机号的服务商并返回
+     * @param $mobile
+     * @return carrier 服务商
+     */
+    public function getCarrier($mobile)
+    {
+        return $this->mobileValidate($mobile);
     }
 
     /**
@@ -211,6 +223,5 @@ class Liumi implements FlowInterface
         }
 
     }
-
 
 }

@@ -13,6 +13,13 @@ interface FlowInterface
     public function carrier($carrier);
 
     /**
+     * 判断手机号的服务商并返回
+     * @param $mobile
+     * @return carrier 服务商
+     */
+    public function getCarrier($mobile);
+
+    /**
      * 流量
      * @param $package 流量包大小
      * @return $this
