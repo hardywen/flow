@@ -44,6 +44,8 @@ class Liumi implements FlowInterface
             throw new \Exception('缺少appSecret参数', 500);
         }
 
+        $this->domain = $config['domain'];
+
         $this->appKey = $config['appKey'];
 
         $this->appSecret = $config['appSecret'];
