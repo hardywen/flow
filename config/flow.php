@@ -54,8 +54,8 @@ return [
 
     //流米
     'liumi' => [
-        'domain'    => '',
-        'appKey'    => '',
-        'appSecret' => ''
+        'domain'    => env('LIUMI_API_DOMAIN','http://api.tenchang.com'),
+        'appKey'    => env('LIUMI_APP_KEY',''),
+        'appSecret' => env('LIUMI_APP_SECRET','')
     ]
 ];
