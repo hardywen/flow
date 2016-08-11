@@ -23,7 +23,7 @@ class FlowServiceProvider extends ServiceProvider
     public function boot()
     {
         //config
-        $this->mergeConfigFrom(realpath(__DIR__ . '/../config/flow.php'));
+        $this->mergeConfigFrom(realpath(__DIR__ . '/../config/flow.php'),'flow');
 
         //translate
         $this->loadTranslationsFrom(realpath(__DIR__ . '/../lang'), 'flow');
