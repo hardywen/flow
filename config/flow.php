@@ -57,5 +57,26 @@ return [
         'domain'    => '',
         'appKey'    => '',
         'appSecret' => ''
-    ]
+    ],
+
+    /*
+     * 源慧
+     */
+    'yuanhui' => [
+        /*
+         * 客户/账号
+         */
+        'cid' => 107,
+
+        /*
+         * 获取 API 校验
+         */
+        'appkey' => 'DEMO_Pass_Edrt%Rt',
+
+        /*
+         * 服务地址
+         */
+        'url' => 'http://demo.eswapi.com/API/',
+    ],
+
 ];
