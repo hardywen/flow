@@ -15,6 +15,18 @@ class FlowServiceProviderForLumen extends ServiceProvider
     protected $defer = true;
 
     /**
+     * Bootstrap the application events.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        //translate
+        $this->loadTranslationsFrom(realpath(__DIR__ . '/../lang'), 'flow');
+
+    }
+
+    /**
      * Register the service provider.
      *
      * @return void
