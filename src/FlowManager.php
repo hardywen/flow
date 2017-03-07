@@ -5,6 +5,7 @@ namespace Hardywen\Flow;
 
 use Hardywen\Flow\Providers\Liuliangwangguan;
 use Hardywen\Flow\Providers\Liumi;
+use Hardywen\Flow\Providers\Ofpay;
 
 class FlowManager
 {
@@ -25,6 +26,10 @@ class FlowManager
              */
             case 'liuliangwangguan':
                 return new Liuliangwangguan(config('flow.liuliangwangguan'));
+                break;
+
+            case 'ofpay':
+                return new Ofpay(config('flow.ofpay'));
                 break;
 
             default:
