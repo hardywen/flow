@@ -244,7 +244,7 @@ class Ofpay implements FlowInterface
 
 
         /**
-         * 通过 服务商 和 流量包, 获取对应的: 流量面值和流量值
+         * [*]通过 服务商 和 流量包, 获取对应的: 流量面值和流量值
          */
         $this->getPerFlow();
 
@@ -271,25 +271,13 @@ class Ofpay implements FlowInterface
             'phoneno' => $this->mobile,
             'perValue' => $this->perValue,
             'flowValue' => $this->flowValue,
-            'range' => self::RANGE_NATION,
-            'effectStartTime' => self::EFFECT_START_AT_CUR_DAY,
-            //'effectTime' => $this->effectTime ? $this->effectTime : self::EFFECT_TIME_CUR_MONTH,
-            'effectTime' => self::EFFECT_TIME_CUR_MONTH,
+            'range' => self::RANGE_NATION, // 全国有效
+            'effectStartTime' => self::EFFECT_START_AT_CUR_DAY, // 即时生效
+            'effectTime' => self::EFFECT_TIME_CUR_MONTH, // 当月有效
             'netType' => '',
             'sporderId' => $this->orderId
         ];
-
-        $str = $params['userid']
-            . $params['userpws']
-            . $params['phoneno']
-            . $params['perValue']
-            . $params['flowValue']
-            . $params['range']
-            . $params['effectStartTime']
-            . $params['effectTime']
-            . ($params['netType'] ? $params['netType'] : '')
-            . $params['sporderId'];
-        $params['md5Str'] = $this->sign($str);
+        $params['md5Str'] = $this->sign($params);
 
         $params['retUrl'] = $this->redirect;
         $params['version'] = $this->version;
@@ -422,6 +410,7 @@ class Ofpay implements FlowInterface
     protected function getPerFlow()
     {
         $packages = $this->resources[$this->carrier];
+
         foreach ($packages as $per => $flow) {
             if ($this->transferPackage($this->package) == $flow) {
                 $this->flowValue = $flow;
@@ -451,7 +440,6 @@ class Ofpay implements FlowInterface
          * 2: KeyStr 默认为 OFCARD, 实际上线时可以修改。
          * 3: KeyStr 不在接口间进行传送。
          */
-        //dd($params);
 
         if (is_array($params)) {
             $params = implode('', $params);
@@ -483,6 +471,7 @@ class Ofpay implements FlowInterface
 
         return $packageNum.'M';
     }
+
 
     /**
      * 发送curl请求
