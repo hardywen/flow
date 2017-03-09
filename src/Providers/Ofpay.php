@@ -16,6 +16,7 @@ class Ofpay implements FlowInterface
      */
     const API_FLOW_ORDER = '/flowOrder.do';
 
+
     /**
      * 使用范围( 1->省内, 2->全国 )
      */
@@ -26,7 +27,7 @@ class Ofpay implements FlowInterface
      * 生效时间( 1->当日, 2->次日, 3->次月 )
      */
     const EFFECT_START_AT_CUR_DAY    = 1;
-    const EFFECT_START_AT_CUR_MONTH  = 2;
+    const EFFECT_START_AT_NEXT_DAY   = 2;
     const EFFECT_START_AT_NEXT_MONTH = 3;
 
     /**
@@ -126,15 +127,6 @@ class Ofpay implements FlowInterface
     protected $orderId;
 
     /**
-     * 有效期
-     *
-     * @author Eddie
-     *
-     * @var
-     */
-//    protected $effectTime;
-
-    /**
      * 充值回调地址
      *
      * @author Eddie
@@ -184,17 +176,11 @@ class Ofpay implements FlowInterface
             $this->key = $config['test_key'];
         }
         else {
-//            if (!$config['api_url'])
-//                throw new \Exception('缺少api_url参数', 500);
-
             if (!$config['userid'])
                 throw new \Exception('缺少userid参数', 500);
 
             if (!$config['userpws'])
                 throw new \Exception('缺少userpws参数', 500);
-
-            if (!$config['version'])
-                throw new \Exception('缺少version参数', 500);
 
             if (!$config['key'])
                 throw new \Exception('缺少key参数', 500);
@@ -202,12 +188,10 @@ class Ofpay implements FlowInterface
 
             /// http://AXXXX.api2.ofpay.com
             $this->api_url = 'http://' . $config['userid'] . '.api2.ofpay.com';
-
             $this->userid = $config['userid'];
             $this->userpwd = $config['userpws'];
             $this->key = $config['key'];
         }
-
         $this->version = $config['version'];
         $this->resources = $config['resources'];
     }
@@ -283,7 +267,10 @@ class Ofpay implements FlowInterface
         $params['version'] = $this->version;
 
         $url = $this->api_url . self::API_FLOW_ORDER;
-        \Log::info('request: ', ['url' => $url, 'params' => $params]);
+        //\Log::info('request: ', ['url' => $url, 'params' => $params]);
+        //\Log::info('Request url: '.$url);
+        //\Log::info('Request params:');
+        //\Log::info($params);
 
         $response = $this->remote($url, $params, 'POST');
 
@@ -334,34 +321,18 @@ class Ofpay implements FlowInterface
     }
 
     /**
-     * Setter - set effect_time.
+     * Setter - set package.
      *
      * @author Eddie
      *
-     * @param $effectTime
+     * @param $package
      * @return $this
      */
-//    public function effect_time($effectTime)
-//    {
-//        if (in_array($effectTime, [
-//            self::EFFECT_TIME_CUR_MONTH,
-//            self::EFFECT_TIME_30_DAYS,
-//            self::EFFECT_TIME_HALF_YEAR,
-//            self::EFFECT_TIME_3_MONTH,
-//            self::EFFECT_TIME_2_MONTH,
-//            self::EFFECT_TIME_6_MONTH,
-//            self::EFFECT_TIME_20_DAYS,
-//            self::EFFECT_TIME_3_DAYS,
-//            self::EFFECT_TIME_90_DAYS,
-//            self::EFFECT_TIME_7_DAYS,
-//        ])) {
-//            $this->effectTime = $effectTime;
-//        }
-//        else {
-//            $this->effectTime = self::EFFECT_TIME_CUR_MONTH;
-//        }
-//        return $this;
-//    }
+    public function package($package)
+    {
+        $this->package = $package;
+        return $this;
+    }
 
     /**
      * 服务商: YD:移动,LT:联通,DX:电信
@@ -387,18 +358,6 @@ class Ofpay implements FlowInterface
         return '';
     }
 
-    /**
-     * 流量包
-     *
-     * @param $package
-     * @return $this
-     */
-    public function package($package)
-    {
-        $this->package = $package;
-        return $this;
-    }
-
 
     /**
      * 通过流量包获取对应的面值和流量值
@@ -421,7 +380,7 @@ class Ofpay implements FlowInterface
     }
 
     /**
-     * Sign
+     * Make a signature.
      *
      * @author Eddie
      *
@@ -462,7 +421,6 @@ class Ofpay implements FlowInterface
         return json_encode($data, JSON_UNESCAPED_UNICODE);
     }
 
-
     protected function transferPackage($packageNum)
     {
         if ($packageNum == '1024') {
@@ -472,9 +430,8 @@ class Ofpay implements FlowInterface
         return $packageNum.'M';
     }
 
-
     /**
-     * 发送curl请求
+     * Send request with CURL.
      *
      * @author Eddie
      *
