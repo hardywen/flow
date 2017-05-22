@@ -274,7 +274,9 @@ class Ofpay implements FlowInterface
 
         $response = $this->remote($url, $params, 'POST');
 
-        return $this->parse2Json($response);
+        $response = $this->parse2Json($response);
+
+        return $this->transform($response);
     }
 
 
@@ -301,6 +303,11 @@ class Ofpay implements FlowInterface
      * @return $this
      */
     public function order_id($orderId)
+    {
+        $this->orderId = $orderId;
+        return $this;
+    }
+    public function orderId($orderId)
     {
         $this->orderId = $orderId;
         return $this;
@@ -353,9 +360,7 @@ class Ofpay implements FlowInterface
      */
     public function getCarrier($mobile)
     {
-        /// TODO
-
-        return '';
+        return $this->mobileValidate($mobile);
     }
 
 
@@ -479,4 +484,33 @@ class Ofpay implements FlowInterface
         return $result;
     }
 
+
+    /**
+     * 转成标准返回格式
+     * @param $result
+     * @return array
+     */
+    public function transform($result)
+    {
+        $result = json_decode($result, true);
+
+        if (!$result) {
+            return $result;
+        }
+
+        $return = [
+            'provider' => 'ofpay',
+            'code'     => $result['retcode']
+        ];
+        if ($result['retcode'] == '1') {
+            $return['success'] = true;
+            $return['order_sn'] = $result['orderid'];
+        }
+        else {
+            $return['success'] = false;
+            $return['msg'] = $result['err_msg'];
+        }
+
+        return $return;
+    }
 }
